@@ -26,11 +26,11 @@ export default class Master extends React.Component<IMasterViewProps> {
     return (
       <div className={styles.grid}>
         <div className={styles.gridRow}>
-          <div className={styles.gridCol4}>Title</div>
+          <div className={styles.gridCol4}>Nome:</div>
           <div className={styles.gridCol6}>{item.title} {loading && <Spinner size={SpinnerSize.xSmall} />}</div>
         </div>
         <div className={styles.gridRow}>
-          <div className={styles.gridCol4}>Cod.</div>
+          <div className={styles.gridCol4}>Sigla:</div>
           <div className={styles.gridCol6}>{item.codRegione}</div>
         </div>
       </div>
