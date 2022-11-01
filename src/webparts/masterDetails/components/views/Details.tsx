@@ -11,7 +11,7 @@ export interface IDetailsViewProps {
 export default class Details extends React.Component<IDetailsViewProps> {
 
   private _columns: IColumn[] = [
-    { key: 'title', name: 'Provincia', fieldName: 'title', minWidth: 100, maxWidth: 200, isResizable: true },
+    { key: 'title', name: 'Nome', fieldName: 'title', minWidth: 100, maxWidth: 200, isResizable: true },
     { key: 'codProvincia', name: 'Sigla', fieldName: 'codProvincia', minWidth: 100, maxWidth: 200, isResizable: true },
     { key: 'modified', name: 'Ultima modifica', fieldName: 'modified', minWidth: 100, maxWidth: 200, isResizable: true },
   ];

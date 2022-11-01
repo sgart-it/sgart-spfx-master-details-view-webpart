@@ -1,6 +1,6 @@
 # sgart-spfx-master-details-view-webpart
 
-SPFx base template for master details (beta)
+SPFx base template for master details view (beta)
 
 ## Summary
 

@@ -99,6 +99,8 @@ export default class MasterDetailsViewWebPart extends BaseClientSideWebPart<IMas
   }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+    this.render();  // force render
+
     const viewModeOptions = Object.keys(ViewMode)
       .filter((v) => isNaN(Number(v)))
       .map(item => { return { key: item, text: item } });
@@ -156,7 +158,7 @@ export default class MasterDetailsViewWebPart extends BaseClientSideWebPart<IMas
               groupFields: [
                 PropertyPaneLink('linkField', {
                   text: "Sgart.it",
-                  href: "https://www.sgart.it/?SPFxMasterDetails",
+                  href: "https://www.sgart.it/?SPFxMasterDetailsView",
                   target: "_blank"
                 })
               ]
@@ -170,4 +172,6 @@ export default class MasterDetailsViewWebPart extends BaseClientSideWebPart<IMas
   protected onPropertyPaneConfigurationComplete(): void {
     this.render();
   }
+  /*protected onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newValue: any): void {
+  }*/
 }

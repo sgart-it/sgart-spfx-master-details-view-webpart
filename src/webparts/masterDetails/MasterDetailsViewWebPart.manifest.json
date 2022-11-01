@@ -22,8 +22,8 @@
     "description": { "default": "Master Details View Web Part (Sgart.it)" },
     "officeFabricIconFontName": "PreviewLink",
     "properties": {
-      "webpartTitle": "Master Details View",
-      "detailsTitle": "Details",
+      "webpartTitle": "Regione",
+      "detailsTitle": "Province",
       "viewMode": "MasterAndDetails",
       "webRelativeUrl": "",
       "masterListName": "Regioni",
