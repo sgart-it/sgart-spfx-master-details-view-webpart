@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Spinner, SpinnerSize } from "office-ui-fabric-react";
+import { DetailsList, DetailsListLayoutMode, IColumn, SelectionMode, Spinner, SpinnerSize } from "office-ui-fabric-react";
 import styles from "../MasterDetails.module.scss";
 import { IDetailItem } from "../../data/IDetailItem";
 
@@ -9,6 +9,12 @@ export interface IDetailsViewProps {
 }
 
 export default class Details extends React.Component<IDetailsViewProps> {
+
+  private _columns: IColumn[] = [
+    { key: 'title', name: 'Provincia', fieldName: 'title', minWidth: 100, maxWidth: 200, isResizable: true },
+    { key: 'codProvincia', name: 'Sigla', fieldName: 'codProvincia', minWidth: 100, maxWidth: 200, isResizable: true },
+    { key: 'modified', name: 'Ultima modifica', fieldName: 'modified', minWidth: 100, maxWidth: 200, isResizable: true },
+  ];
 
   public render(): React.ReactElement<{}> {
     const { loading, items } = this.props;
@@ -23,35 +29,18 @@ export default class Details extends React.Component<IDetailsViewProps> {
       );
     }
 
-    const rows = items.map((item: IDetailItem, index: number) => {
-      return (
-        <tr key={item.id}>
-          <td>{item.title}</td>
-          <td>{item.codProvincia}</td>
-          <td>{item.modified}</td>
-        </tr>
-      );
-
-    });
-
     return (
-      <div className={styles.grid}>
-        <div className={styles.gridRow}>
-          <div className={styles.gridCol1}>
-            {loading && <Spinner size={SpinnerSize.xSmall} />}
-            <table>
-              <thead>
-                <tr>
-                  <th>Regione</th>
-                  <th>Codice</th>
-                  <th>Ultima modifica</th>
-                </tr>
-              </thead>
-              <tbody>{rows}</tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+      <>
+        {loading && <Spinner size={SpinnerSize.xSmall} />}
+
+        <DetailsList
+          items={items}
+          columns={this._columns}
+          setKey="set"
+          layoutMode={DetailsListLayoutMode.justified}
+          selectionMode={SelectionMode.none}
+        />
+      </>
     );
   }
 
