@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styles from './MasterDetailsView.module.scss';
-import { MessageBar, MessageBarType } from "office-ui-fabric-react";
+import { MessageBar, MessageBarType, Separator } from "office-ui-fabric-react";
 import { IMasterDetailsViewProps } from './IMasterDetailsViewProps';
 import { IMasterDetailsViewState } from './IMasterDetailsViewState';
 import { escape } from '@microsoft/sp-lodash-subset';
@@ -58,7 +58,7 @@ export default class MasterDetailsView extends React.Component<IMasterDetailsVie
       hasTeamsContext
     } = this.props;
 
-    const { showMaster, showDetails, masterItem, detailItems } = this.state;
+    const { masterLoading, detailsLoading, showMaster, showDetails, masterItem, detailItems } = this.state;
 
     const isTitleVisible = !isNullOrWhiteSpace(title);
     const isDetailsTitleVisible = !isNullOrWhiteSpace(detailsTitle);
@@ -78,9 +78,9 @@ export default class MasterDetailsView extends React.Component<IMasterDetailsVie
           </MessageBar>
         )}
 
-        {showMaster && <Master item={masterItem} />}
+        {showMaster && <Master item={masterItem} loading={masterLoading} />}
 
-        {showMaster && showDetails && <hr />}
+        {showMaster && showDetails && <Separator />}
 
         {showMaster && showDetails && isDetailsTitleVisible && (
           <div className={styles.title2}>
@@ -88,7 +88,7 @@ export default class MasterDetailsView extends React.Component<IMasterDetailsVie
           </div>
         )}
 
-        {showDetails && <Details items={detailItems} />}
+        {showDetails && <Details items={detailItems} loading={detailsLoading} />}
 
         {isPropertyPaneOpen && (
           <MessageBar

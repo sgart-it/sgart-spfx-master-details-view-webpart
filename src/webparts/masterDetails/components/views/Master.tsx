@@ -1,17 +1,19 @@
 import * as React from "react";
-import { IMasterItem } from "../../data/IMasterItem";
+import { Spinner, SpinnerSize } from "office-ui-fabric-react";
 import styles from "../MasterDetails.module.scss";
+import { IMasterItem } from "../../data/IMasterItem";
 
 export interface IMasterViewProps {
+  loading: boolean;
   item: IMasterItem;
 }
 
 export default class Master extends React.Component<IMasterViewProps> {
 
   public render(): React.ReactElement<{}> {
-    const { item } = this.props;
+    const { loading, item } = this.props;
 
-    if(item===undefined) {
+    if (item === undefined) {
       return (
         <div className={styles.grid}>
           <div className={styles.gridRow}>
@@ -25,7 +27,7 @@ export default class Master extends React.Component<IMasterViewProps> {
       <div className={styles.grid}>
         <div className={styles.gridRow}>
           <div className={styles.gridCol4}>Title</div>
-          <div className={styles.gridCol6}>{item.title}</div>
+          <div className={styles.gridCol6}>{item.title} {loading && <Spinner size={SpinnerSize.xSmall} />}</div>
         </div>
         <div className={styles.gridRow}>
           <div className={styles.gridCol4}>Cod.</div>

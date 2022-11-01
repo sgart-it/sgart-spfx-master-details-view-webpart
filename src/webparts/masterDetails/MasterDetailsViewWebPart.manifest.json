@@ -20,7 +20,7 @@
     "group": { "default": "Advanced" },
     "title": { "default": "Master Details View" },
     "description": { "default": "Master Details View Web Part (Sgart.it)" },
-    "officeFabricIconFontName": "Page",
+    "officeFabricIconFontName": "PreviewLink",
     "properties": {
       "webpartTitle": "Master Details View",
       "detailsTitle": "Details",
