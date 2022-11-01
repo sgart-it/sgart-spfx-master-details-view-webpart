@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "sgart-spfx-master-details-webpart-client-side-solution",
+    "id": "fee578d3-817d-4be5-b9e8-90214e553678",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.15.2"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "sgart-spfx-master-details-webpart description"
+      },
+      "longDescription": {
+        "default": "sgart-spfx-master-details-webpart description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "sgart-spfx-master-details-webpart Feature",
+        "description": "The feature that activates elements of the sgart-spfx-master-details-webpart solution.",
+        "id": "21061285-b65c-4a9f-8879-b0824d3485f0",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/sgart-spfx-master-details-webpart.sppkg"
+  }
+}
