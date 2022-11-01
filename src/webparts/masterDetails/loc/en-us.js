@@ -12,14 +12,16 @@ define([], function() {
 
 
     "WebPartTitleLabel": "Web part title",
+    "DetailsTitleLabel": "Details title",
+    "ViewModeLabel": "View mode",
     
     "WebRelativeUrlLabel": "Web relative url",
     "WebRelativeUrlDescription": "/ for root site or /sites/name for a specific site collection or blank for current site",
     "MasterListNameLabel": "Master list",
-    "ListNameDescription": "Display name of list or guid in the form {xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx} or list (/Lists/listName or /DocLibName or /lists or /folders or /webinfos)",
+    "ListNameDescription": "Display name of list or guid in the form {xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx} or list (/Lists/listName or /DocLibName)",
     "DetailsListNameLabel": "Details list",
     "DetailsMasterFieldNameLabel":"Field name lookup (idMaster)",
-    "DetailsMasterFieldNameDescription":"ex.: for lookup whit name 'Regione' use 'RegioneId'",
+    "DetailsMasterFieldNameDescription":"ex.: for lookup with name 'Regione' use 'RegioneId'",
 
     "QueryStringNameLabel": "Query string parameter name",
     "QueryStringNameDescription": "ex. idMaster" 

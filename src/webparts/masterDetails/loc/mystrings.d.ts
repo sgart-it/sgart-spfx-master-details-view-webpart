@@ -11,6 +11,8 @@ declare interface IMasterDetailsViewWebPartStrings {
 
 
   WebPartTitleLabel: string;
+  DetailsTitleLabel: string;
+  ViewModeLabel: string;
   
   WebRelativeUrlLabel: string;
   WebRelativeUrlDescription: string;

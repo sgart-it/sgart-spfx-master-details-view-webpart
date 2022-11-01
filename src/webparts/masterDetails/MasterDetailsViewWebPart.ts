@@ -3,6 +3,7 @@ import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
 import {
   IPropertyPaneConfiguration,
+  PropertyPaneDropdown,
   PropertyPaneLink,
   PropertyPaneTextField
 } from '@microsoft/sp-property-pane';
@@ -14,6 +15,7 @@ import MasterDetails from './components/MasterDetailsView';
 import { IMasterDetailsViewProps } from './components/IMasterDetailsViewProps';
 import { IMasterDetailsViewWebPartProps } from './IMasterDetailsViewWebPartProps';
 import { initDataService } from './data/DataService';
+import { ViewMode } from './components/ViewMode';
 
 export default class MasterDetailsViewWebPart extends BaseClientSideWebPart<IMasterDetailsViewWebPartProps> {
 
@@ -32,18 +34,22 @@ export default class MasterDetailsViewWebPart extends BaseClientSideWebPart<IMas
     const params = new URLSearchParams(document.location.search);
     // attenzione il parametro in query string è case sensitive
     const idMaster = Number(params.get(this.properties.queryStringName));
+    const props = this.properties;
 
     const element: React.ReactElement<IMasterDetailsViewProps> = React.createElement(
       MasterDetails,
       {
         isPropertyPaneOpen: this.context.propertyPane.isPropertyPaneOpen(),
 
-        title: this.properties.webpartTitle,
-        webRelativeUrl: this.properties.webRelativeUrl,
-        masterListName: this.properties.masterListName,
-        detailsListName: this.properties.detailsListName,
-        detailsMasterFieldName: this.properties.detailsMasterFieldName,
-        queryStringName: this.properties.queryStringName,
+        title: props.webpartTitle,
+        detailsTitle: props.detailsTitle,
+        viewMode: (ViewMode as any)[this.properties.viewMode],
+
+        webRelativeUrl: props.webRelativeUrl,
+        masterListName: props.masterListName,
+        detailsListName: props.detailsListName,
+        detailsMasterFieldName: props.detailsMasterFieldName,
+        queryStringName: props.queryStringName,
 
         idMaster: idMaster,
 
@@ -54,7 +60,7 @@ export default class MasterDetailsViewWebPart extends BaseClientSideWebPart<IMas
       }
     );
 
-    console.log('instance', this.context.instanceId);
+    console.log('Master/Details instance id', this.context.instanceId);
     ReactDom.render(element, this.domElement);
   }
 
@@ -93,6 +99,10 @@ export default class MasterDetailsViewWebPart extends BaseClientSideWebPart<IMas
   }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+    const viewModeOptions = Object.keys(ViewMode)
+      .filter((v) => isNaN(Number(v)))
+      .map(item => { return { key: item, text: item } });
+
     return {
       pages: [
         {
@@ -106,7 +116,14 @@ export default class MasterDetailsViewWebPart extends BaseClientSideWebPart<IMas
               groupFields: [
                 PropertyPaneTextField('webpartTitle', {
                   label: strings.WebPartTitleLabel
-                })
+                }),
+                PropertyPaneTextField('detailsTitle', {
+                  label: strings.DetailsTitleLabel
+                }),
+                PropertyPaneDropdown('viewMode', {
+                  label: strings.ViewModeLabel,
+                  options: viewModeOptions
+                }),
               ]
             },
             {

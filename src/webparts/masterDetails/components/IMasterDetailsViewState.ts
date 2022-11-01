@@ -8,6 +8,9 @@ export interface IMasterDetailsViewState {
   masterLoading: boolean;
   detailsLoading: boolean;
 
+  showMaster: boolean;
+  showDetails: boolean;
+
   masterItem: IMasterItem;
   detailItems: IDetailItem[];
   

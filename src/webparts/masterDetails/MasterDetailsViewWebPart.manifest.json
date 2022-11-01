@@ -23,6 +23,8 @@
     "officeFabricIconFontName": "Page",
     "properties": {
       "webpartTitle": "Master Details View",
+      "detailsTitle": "Details",
+      "viewMode": "MasterAndDetails",
       "webRelativeUrl": "",
       "masterListName": "Regioni",
       "detailsListName": "Province",

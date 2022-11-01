@@ -26,7 +26,6 @@ const _localeDateTimeOptions: Intl.DateTimeFormatOptions = { year: 'numeric', mo
 const getString = (item: object, name: string): string | undefined => {
     try {
         const value = (item as any)[name];
-        console.log('getString', item, item as any, (item as any)[name]);
 
         if (null === value) return undefined;
 
@@ -196,7 +195,7 @@ export async function getDetails(webRelativeUrl: string, listName: string, filed
                         id: item.Id,
                         title: isNullOrWhiteSpace(title) || title === '-' ? '' : title,
                         codProvincia: getString(item, "CodProvincia"),
-                        modified: getDate(item, "Modified", "date")
+                        modified: getDate(item, "Modified", "datetime")
                     };
                 });
                 result.success = true;

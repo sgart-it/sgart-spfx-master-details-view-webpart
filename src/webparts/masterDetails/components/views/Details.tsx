@@ -25,8 +25,8 @@ export default class Details extends React.Component<IDetailsViewProps> {
       return (
         <tr key={item.id}>
           <td>{item.title}</td>
-          <td className={styles.gridCol4}>{item.codProvincia}</td>
-          <td className={styles.gridCol4}>{item.modified}</td>
+          <td>{item.codProvincia}</td>
+          <td>{item.modified}</td>
         </tr>
       );
 

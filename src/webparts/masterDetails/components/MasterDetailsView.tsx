@@ -11,8 +11,9 @@ import { isNullOrWhiteSpace } from '../Helper';
 import { IResult } from '../data/IResult';
 import { IMasterItem } from '../data/IMasterItem';
 import { IDetailItem } from '../data/IDetailItem';
+import { ViewMode } from './ViewMode';
 
-const VERSION = "1.2022-10-29";
+const VERSION = "1.2022-11-01";
 
 export default class MasterDetailsView extends React.Component<IMasterDetailsViewProps, IMasterDetailsViewState> {
 
@@ -22,6 +23,9 @@ export default class MasterDetailsView extends React.Component<IMasterDetailsVie
     this.state = {
       masterLoading: true,
       detailsLoading: true,
+
+      showMaster: false,
+      showDetails: false,
 
       success: false,
 
@@ -39,6 +43,9 @@ export default class MasterDetailsView extends React.Component<IMasterDetailsVie
     const {
       isPropertyPaneOpen,
       title,
+      detailsTitle,
+      viewMode,
+
       webRelativeUrl,
       masterListName,
       detailsListName,
@@ -51,14 +58,15 @@ export default class MasterDetailsView extends React.Component<IMasterDetailsVie
       hasTeamsContext
     } = this.props;
 
-    const { masterItem, detailItems } = this.state;
+    const { showMaster, showDetails, masterItem, detailItems } = this.state;
 
-    const isTitleVivible = !isNullOrWhiteSpace(title);
+    const isTitleVisible = !isNullOrWhiteSpace(title);
+    const isDetailsTitleVisible = !isNullOrWhiteSpace(detailsTitle);
 
     return (
       <section className={`${styles.masterDetails} ${hasTeamsContext ? styles.teams : ''}`}>
 
-        {isTitleVivible && (
+        {isTitleVisible && (
           <div className={styles.title}>
             <span role="heading">{escape(title)}</span>
           </div>
@@ -70,11 +78,17 @@ export default class MasterDetailsView extends React.Component<IMasterDetailsVie
           </MessageBar>
         )}
 
-        <Master item={masterItem} />
+        {showMaster && <Master item={masterItem} />}
 
-        <hr />
+        {showMaster && showDetails && <hr />}
 
-        <Details items={detailItems} />
+        {showMaster && showDetails && isDetailsTitleVisible && (
+          <div className={styles.title2}>
+            <span role="heading">{escape(detailsTitle)}</span>
+          </div>
+        )}
+
+        {showDetails && <Details items={detailItems} />}
 
         {isPropertyPaneOpen && (
           <MessageBar
@@ -86,7 +100,8 @@ export default class MasterDetailsView extends React.Component<IMasterDetailsVie
             <div>Version: {VERSION}</div>
             <div>Author: <a href="https://www.sgart.it?SPFxMasterDetails" target="_blank" rel="noreferrer">Sgart.it</a></div>
             <hr />
-            <div>WebUrl: <strong>{escape(webRelativeUrl)}</strong></div>
+            <div>viewMode: <strong>{(ViewMode as any)[viewMode]} ({viewMode})</strong></div>
+            <div>webUrl: <strong>{escape(webRelativeUrl)}</strong></div>
             <div>masterListName: <strong>{escape(masterListName)}</strong></div>
             <div>detailsListName: <strong>{escape(detailsListName)}</strong></div>
             <div>detailsMasterFieldName: <strong>{escape(detailsMasterFieldName)}</strong></div>
@@ -103,6 +118,9 @@ export default class MasterDetailsView extends React.Component<IMasterDetailsVie
 
   public async componentDidUpdate(prevProps: IMasterDetailsViewProps, prevState: IMasterDetailsViewState): Promise<void> {
     if (
+      prevProps.title !== this.props.title ||
+      prevProps.detailsTitle !== this.props.detailsTitle ||
+      prevProps.viewMode !== this.props.viewMode ||
       prevProps.webRelativeUrl !== this.props.webRelativeUrl ||
       prevProps.masterListName !== this.props.masterListName ||
       prevProps.detailsListName !== this.props.detailsListName ||
@@ -113,44 +131,56 @@ export default class MasterDetailsView extends React.Component<IMasterDetailsVie
   }
 
   private async loadItems(): Promise<void> {
-    const { webRelativeUrl, masterListName, detailsListName, detailsMasterFieldName, idMaster } = this.props;
+    const { viewMode, webRelativeUrl, masterListName, detailsListName, detailsMasterFieldName, idMaster } = this.props;
+
+    const showMaster = viewMode === ViewMode.MasterAndDetails || viewMode === ViewMode.Master;
+    const showDetails = viewMode === ViewMode.MasterAndDetails || viewMode === ViewMode.Details;
 
     try {
-      this.setState({ masterLoading: true, detailsLoading: true });
-
-      getMaster(webRelativeUrl, masterListName, idMaster)
-        .then((result: IResult<IMasterItem>) => {
-          this.setState({
-            masterLoading: false,
-            masterItem: result.data,
-            error: result.error,
-            masterUrl: result.url
-          });
-        })
-        .catch(error => {
-          this.setState({
-            masterLoading: false,
-            masterItem: undefined,
-            error: error
-          });
-        });
-
-      getDetails(webRelativeUrl, detailsListName, detailsMasterFieldName, idMaster)
-      .then((result: IResult<IDetailItem[]>) => {
-        this.setState({
-          detailsLoading: false,
-          detailItems: result.data,
-          error: result.error,
-          masterUrl: result.url
-        });
-      })
-      .catch(error => {
-        this.setState({
-          detailsLoading: false,
-          detailItems: [],
-          error: error
-        });
+      this.setState({
+        masterLoading: showMaster,
+        detailsLoading: showDetails,
+        showMaster: showMaster,
+        showDetails: showDetails
       });
+
+      if (showMaster === true) {
+        getMaster(webRelativeUrl, masterListName, idMaster)
+          .then((result: IResult<IMasterItem>) => {
+            this.setState({
+              masterLoading: false,
+              masterItem: result.data,
+              error: result.error,
+              masterUrl: result.url
+            });
+          })
+          .catch(error => {
+            this.setState({
+              masterLoading: false,
+              masterItem: undefined,
+              error: error
+            });
+          });
+      }
+
+      if (showDetails === true) {
+        getDetails(webRelativeUrl, detailsListName, detailsMasterFieldName, idMaster)
+          .then((result: IResult<IDetailItem[]>) => {
+            this.setState({
+              detailsLoading: false,
+              detailItems: result.data,
+              error: result.error,
+              masterUrl: result.url
+            });
+          })
+          .catch(error => {
+            this.setState({
+              detailsLoading: false,
+              detailItems: [],
+              error: error
+            });
+          });
+      }
 
     } catch (error) {
       this.setState({

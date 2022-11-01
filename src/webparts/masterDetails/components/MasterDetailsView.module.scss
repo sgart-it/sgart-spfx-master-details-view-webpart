@@ -61,6 +61,15 @@ Orange theme
   margin: 0 0 10px 0;
 }
 
+.title2 {
+  @include ms-fontSize-l;
+  @include ms-fontWeight-semibold;
+  text-align: left;
+  color: "[theme:bodyText, default: #323130]";
+  color: var(--bodyText);
+  margin: 0 0 10px 0;
+}
+
 .debugInfo {
   margin-top: 20px;
 }

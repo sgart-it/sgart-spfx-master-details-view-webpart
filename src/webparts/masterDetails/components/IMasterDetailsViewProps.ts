@@ -1,5 +1,9 @@
+import { ViewMode } from "./ViewMode";
+
 export interface IMasterDetailsViewProps {
   title: string;
+  detailsTitle: string;
+  viewMode: ViewMode;
   isPropertyPaneOpen: boolean;
 
   webRelativeUrl: string;
