@@ -145,41 +145,12 @@ export default class MasterDetailsView extends React.Component<IMasterDetailsVie
       });
 
       if (showMaster === true) {
-        getMaster(webRelativeUrl, masterListName, idMaster)
-          .then((result: IResult<IMasterItem>) => {
-            this.setState({
-              masterLoading: false,
-              masterItem: result.data,
-              error: result.error,
-              masterUrl: result.url
-            });
-          })
-          .catch(error => {
-            this.setState({
-              masterLoading: false,
-              masterItem: undefined,
-              error: error
-            });
-          });
+        this.loadItemMaster(webRelativeUrl, masterListName, idMaster);
       }
 
+
       if (showDetails === true) {
-        getDetails(webRelativeUrl, detailsListName, detailsMasterFieldName, idMaster)
-          .then((result: IResult<IDetailItem[]>) => {
-            this.setState({
-              detailsLoading: false,
-              detailItems: result.data,
-              error: result.error,
-              masterUrl: result.url
-            });
-          })
-          .catch(error => {
-            this.setState({
-              detailsLoading: false,
-              detailItems: [],
-              error: error
-            });
-          });
+        this.loadItemDetails(webRelativeUrl, detailsListName, detailsMasterFieldName, idMaster);
       }
 
     } catch (error) {
@@ -192,5 +163,42 @@ export default class MasterDetailsView extends React.Component<IMasterDetailsVie
         masterUrl: ""
       });
     }
+  }
+
+  private loadItemMaster(webRelativeUrl: string, listName: string, idMaster: number): void {
+    getMaster(webRelativeUrl, listName, idMaster)
+      .then((result: IResult<IMasterItem>) => {
+        this.setState({
+          masterLoading: false,
+          masterItem: result.data,
+          error: result.error,
+          masterUrl: result.url
+        });
+      })
+      .catch(error => {
+        this.setState({
+          masterLoading: false,
+          masterItem: undefined,
+          error: error
+        });
+      });
+  }
+  private loadItemDetails(webRelativeUrl: string, listName: string, masterFieldName: string, idMaster: number): void {
+    getDetails(webRelativeUrl, listName, masterFieldName, idMaster)
+      .then((result: IResult<IDetailItem[]>) => {
+        this.setState({
+          detailsLoading: false,
+          detailItems: result.data,
+          error: result.error,
+          masterUrl: result.url
+        });
+      })
+      .catch(error => {
+        this.setState({
+          detailsLoading: false,
+          detailItems: [],
+          error: error
+        });
+      });
   }
 }
