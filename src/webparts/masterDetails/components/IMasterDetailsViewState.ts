@@ -16,4 +16,7 @@ export interface IMasterDetailsViewState {
   
   detailsUrl: string;
   masterUrl: string;
+
+  showDialog: boolean,
+  showDialogMessage: string;
 }

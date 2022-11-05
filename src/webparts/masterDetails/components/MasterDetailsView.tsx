@@ -35,7 +35,10 @@ export default class MasterDetailsView extends React.Component<IMasterDetailsVie
       error: undefined,
 
       masterUrl: "",
-      detailsUrl: ""
+      detailsUrl: "",
+
+      showDialog: false,
+      showDialogMessage: null
     };
   }
 
@@ -88,7 +91,7 @@ export default class MasterDetailsView extends React.Component<IMasterDetailsVie
           </div>
         )}
 
-        {showDetails && <Details items={detailItems} loading={detailsLoading} />}
+        {showDetails && <Details items={detailItems} loading={detailsLoading} onButtonClick={this.onButtonClick} />}
 
         {isPropertyPaneOpen && (
           <MessageBar
@@ -199,6 +202,12 @@ export default class MasterDetailsView extends React.Component<IMasterDetailsVie
           detailItems: [],
           error: error
         });
-      });
+      })
   }
+
+  private onButtonClick = (event: any, id: number): void => {
+    // TODO: gestire l'azione se serve
+    alert(`Id: ${id} TODO`);
+  }
+
 }

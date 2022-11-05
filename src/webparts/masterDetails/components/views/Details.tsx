@@ -2,20 +2,38 @@ import * as React from "react";
 import { DetailsList, DetailsListLayoutMode, IColumn, Link, PrimaryButton, SelectionMode, Spinner, SpinnerSize } from "office-ui-fabric-react";
 import styles from "../MasterDetails.module.scss";
 import { IDetailItem } from "../../data/IDetailItem";
+import DialogYesNo from "../others/DialogYesNo";
 
 export interface IDetailsViewProps {
   loading: boolean;
   items: IDetailItem[];
+  onButtonClick: (event: React.MouseEvent<any>, id: number) => void;
 }
 
-export default class Details extends React.Component<IDetailsViewProps> {
+interface IDetailsViewState {
+  showDialog: boolean;
+  message: string;
+  data: any;
+}
 
-  private _columns: IColumn[] = [
-    { key: 'title', name: 'Nome', fieldName: 'title', minWidth: 100, maxWidth: 200, isResizable: true },
-    { key: 'codProvincia', name: 'Sigla', fieldName: 'codProvincia', minWidth: 100, maxWidth: 200, isResizable: true },
-    { key: 'modified', name: 'Ultima modifica', fieldName: 'modified', minWidth: 100, maxWidth: 200, isResizable: true },
-    { key: 'button', name: 'Button', minWidth: 100, maxWidth: 200, isResizable: false },
-  ];
+const _columns: IColumn[] = [
+  { key: 'title', name: 'Nome', fieldName: 'title', minWidth: 100, maxWidth: 200, isResizable: true },
+  { key: 'codProvincia', name: 'Sigla', fieldName: 'codProvincia', minWidth: 100, maxWidth: 200, isResizable: true },
+  { key: 'modified', name: 'Ultima modifica', fieldName: 'modified', minWidth: 100, maxWidth: 200, isResizable: true },
+  { key: 'button', name: 'Button', minWidth: 100, maxWidth: 200, isResizable: false },
+];
+
+export default class Details extends React.Component<IDetailsViewProps, IDetailsViewState> {
+
+  public constructor(props: IDetailsViewProps, state: IDetailsViewState) {
+    super(props);
+
+    this.state = {
+      showDialog: false,
+      message: "",
+      data: null
+    };
+  }
 
   public render(): React.ReactElement<{}> {
     const { loading, items } = this.props;
@@ -36,33 +54,57 @@ export default class Details extends React.Component<IDetailsViewProps> {
 
         <DetailsList
           items={items}
-          columns={this._columns}
-          onRenderItemColumn={this._renderItemColumn}
+          columns={_columns}
+          onRenderItemColumn={this.renderItemColumn}
           setKey="set"
           layoutMode={DetailsListLayoutMode.justified}
           selectionMode={SelectionMode.none}
+        />
+
+        <DialogYesNo
+          show={this.state.showDialog}
+          message={this.state.message}
+          data={this.state.data}
+          onResponde={this.onResponde}
+
         />
       </>
     );
   }
 
-  private _renderItemColumn = (item: IDetailItem, index: number, column: IColumn): React.ReactNode => {
+  private renderItemColumn = (item: IDetailItem, index: number, column: IColumn): React.ReactNode => {
     const fieldContent = item[column.fieldName as keyof IDetailItem] as string;
 
     switch (column.key) {
       case 'title':
+        // esempio 
         return <Link href={"http://it.wikipedia.org/wiki/" + fieldContent.replace(/ /g, '_')} target="_blank">{fieldContent}</Link>;
 
       case 'button':
-        return <PrimaryButton onClick={() => this._showAlert(item.id.toString()) }>Alert</PrimaryButton>;
+        return <PrimaryButton onClick={(event) => this.onShowDialog(event, item)}>Alert</PrimaryButton>;
 
       default:
         return <span>{fieldContent}</span>;
     }
   }
 
-  private _showAlert(title: string): void {
-    // TODO: gestire l'azione se serve
-    alert(`Id: ${title}`);
+  private onShowDialog = (event: any, data: any): void => {
+    this.setState({
+      showDialog: true,
+      message: `Confermi l'item ${data.id}`,
+      data: data
+    });
+  }
+
+  private onResponde = (event: React.MouseEvent<any>, confirmed: boolean, data: any): void => {
+    this.setState({
+      showDialog: false,
+      message: null,
+      data: null
+    });
+
+    if (confirmed === true) {
+      this.props.onButtonClick(event, data.id);
+    }
   }
 }
