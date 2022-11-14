@@ -81,37 +81,30 @@ const getWebRelativeUrl = (webRelativeUrl: string): string => {
 };
 
 const getListRelativeUrl = (webRelativeUrl: string, listName: string): string => {
-
     const relativeUrl = getWebRelativeUrl(webRelativeUrl);
-    let urlPart: string = '';
-    const isUrl = listName.length > 1 && listName[0] === '/';
-    if (isUrl) {
-        const listNameLower = listName.toLowerCase();
-        if (listNameLower === '/lists') {
-            urlPart = 'web/' + listNameLower;
-        } else {
-            urlPart = `web/GetList('${relativeUrl}${listName}')/items`;
-        }
+    let urlPart: string = undefined;
+    if (listName.length > 1 && listName[0] === '/') {
+        urlPart = `GetList('${relativeUrl}${listName}')/items`;
     } else {
         //{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}
         const isGuid = listName.length === 38 && listName[0] === '{' && listName[37] === '}';
         if (isGuid) {
-            urlPart = `web/lists(guid'${listName.substring(1, listName.length - 1)}')/items`;
+            urlPart = `lists(guid'${listName.substring(1, listName.length - 1)}')/items`;
         } else {
-            urlPart = `web/lists/GetByTitle('${listName}')/items`;
+            urlPart = `lists/GetByTitle('${listName}')/items`;
         }
     }
 
-    return relativeUrl + '/_api/' + urlPart;
+    return relativeUrl + '/_api/web/' + urlPart;
 }
 
-export const initDataService = (context: WebPartContext): void => {
+
+const initDataService = (context: WebPartContext): void => {
     _context = context;
     _locale = _context.pageContext.cultureInfo.currentCultureName;
 };
 
-
-export async function getMaster(webRelativeUrl: string, listName: string, idMaster: number): Promise<IResult<IMasterItem>> {
+const getMaster = async (webRelativeUrl: string, listName: string, idMaster: number): Promise<IResult<IMasterItem>> => {
     const result: IResult<IMasterItem> = {
         success: false,
         data: {
@@ -162,7 +155,7 @@ export async function getMaster(webRelativeUrl: string, listName: string, idMast
     return result;
 }
 
-export async function getDetails(webRelativeUrl: string, listName: string, filedName: string, idMaster: number): Promise<IResult<IDetailItem[]>> {
+const getDetails = async (webRelativeUrl: string, listName: string, filedName: string, idMaster: number): Promise<IResult<IDetailItem[]>> => {
     const result: IResult<IDetailItem[]> = {
         success: false,
         data: [],
@@ -210,3 +203,11 @@ export async function getDetails(webRelativeUrl: string, listName: string, filed
     }
     return result;
 }
+
+export const Data = {
+    getWebRelativeUrl,
+    getListRelativeUrl,
+    initDataService,
+    getMaster,
+    getDetails
+};

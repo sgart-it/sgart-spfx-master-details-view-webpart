@@ -14,7 +14,7 @@ import * as strings from 'MasterDetailsViewWebPartStrings';
 import MasterDetails from './components/MasterDetailsView';
 import { IMasterDetailsViewProps } from './components/IMasterDetailsViewProps';
 import { IMasterDetailsViewWebPartProps } from './IMasterDetailsViewWebPartProps';
-import { initDataService } from './data/DataService';
+import { Data } from './data/DataService';
 import { ViewMode } from './components/ViewMode';
 
 export default class MasterDetailsViewWebPart extends BaseClientSideWebPart<IMasterDetailsViewWebPartProps> {
@@ -25,7 +25,7 @@ export default class MasterDetailsViewWebPart extends BaseClientSideWebPart<IMas
   protected onInit(): Promise<void> {
     this._environmentMessage = this._getEnvironmentMessage();
 
-    initDataService(this.context);
+    Data.initDataService(this.context);
 
     return super.onInit();
   }

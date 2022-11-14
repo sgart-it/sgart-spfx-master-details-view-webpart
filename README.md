@@ -8,6 +8,8 @@ Read parameter from querystring (ex. idMaster=10) and reader master and details 
 
 ## install project
 
+yo @microsoft/sharepoint
+
 node v. 16.x
 
 SPFX v. 1.15

@@ -6,7 +6,7 @@ import { IMasterDetailsViewState } from './IMasterDetailsViewState';
 import { escape } from '@microsoft/sp-lodash-subset';
 import Master from './views/Master';
 import Details from './views/Details';
-import { getDetails, getMaster } from '../data/DataService';
+import { Data } from '../data/DataService';
 import { isNullOrWhiteSpace } from '../Helper';
 import { IResult } from '../data/IResult';
 import { IMasterItem } from '../data/IMasterItem';
@@ -169,7 +169,7 @@ export default class MasterDetailsView extends React.Component<IMasterDetailsVie
   }
 
   private loadItemMaster(webRelativeUrl: string, listName: string, idMaster: number): void {
-    getMaster(webRelativeUrl, listName, idMaster)
+    Data.getMaster(webRelativeUrl, listName, idMaster)
       .then((result: IResult<IMasterItem>) => {
         this.setState({
           masterLoading: false,
@@ -187,7 +187,7 @@ export default class MasterDetailsView extends React.Component<IMasterDetailsVie
       });
   }
   private loadItemDetails(webRelativeUrl: string, listName: string, masterFieldName: string, idMaster: number): void {
-    getDetails(webRelativeUrl, listName, masterFieldName, idMaster)
+    Data.getDetails(webRelativeUrl, listName, masterFieldName, idMaster)
       .then((result: IResult<IDetailItem[]>) => {
         this.setState({
           detailsLoading: false,
